@@ -30,6 +30,7 @@ def tokenize(input):
     cleaned = clean_code(input)
     lexemes = []
     position = 0
+    scope = [0]
 
     while position < len(cleaned):
         match = False
@@ -40,7 +41,17 @@ def tokenize(input):
 
             if check:
                 lexeme = check.group(0)
-                lexemes.append(f'Token -> {token:<10}  Lexeme -> {lexeme}')
+                if lexeme == '{':
+                    scope.append(scope[-1] + 1)
+                elif lexeme == '}':
+                    scope.pop()
+                currScopeNum = scope[-1]
+                currScope = ''
+                if currScopeNum == 0:
+                    currScope = 'Global'
+                else:
+                    currScope = 'Local'
+                lexemes.append(f'Token -> {token:<10}  Lexeme -> {lexeme:<12}  Scope -> {currScope:<2}')
                 position += len(lexeme)
                 match = True
                 break
