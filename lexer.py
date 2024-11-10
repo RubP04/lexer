@@ -1,4 +1,6 @@
 import re
+import tkinter as tk
+from tkinter import filedialog, scrolledtext
 
 TOKEN_PATTERNS = [
     ('KEYWORD', r'\b(int|bool|float|char|if|else|while|for|true|false|main)\b'),
@@ -26,6 +28,7 @@ def tokenize(input):
     cleaned = clean_code(input)
     lexemes = []
     position = 0
+    scope = [0]
 
     while position < len(cleaned):
         match = False
@@ -36,7 +39,17 @@ def tokenize(input):
 
             if check:
                 lexeme = check.group(0)
-                lexemes.append(f'Token -> {token:<10}  Lexeme -> {lexeme}')
+                if lexeme == '{':
+                    scope.append(scope[-1] + 1)
+                elif lexeme == '}':
+                    scope.pop()
+                currScopeNum = scope[-1]
+                currScope = ''
+                if currScopeNum == 0:
+                    currScope = 'Global'
+                else:
+                    currScope = 'Local'
+                lexemes.append(f'Token -> {token:<10}  Lexeme -> {lexeme:<12}  Scope -> {currScope:<2}')
                 position += len(lexeme)
                 match = True
                 break
@@ -49,11 +62,33 @@ def tokenize(input):
 def lexer(filename):
     raw_text = read_file(filename)
     tokens = tokenize(raw_text)
+    display_tokens(tokens)
 
     print(f"Lexemes and Tokens for {filename}:")
     for index, token in enumerate(tokens, start=1):
         print(f'{index}. {token}')
 
-if __name__ == "__main__":
-    lexer("text.txt")
+def open_file():
+    filename = filedialog.askopenfilename(title = "Select a txt file", filetypes=[("Text Files", "*.txt")]) 
+    if filename:
+        lexer(filename)
 
+def display_tokens(tokens):
+    output_text.delete(1.0, tk.END)
+    for token in tokens:
+        output_text.insert(tk.END, token + '\n')  # Insert each token on a new line
+
+if __name__ == "__main__":
+    #lexer("text.txt")
+    root = tk.Tk()
+    root.title("Lexer")
+    root.geometry("500x500")
+
+    open_button = tk.Button(root, text = "Open File", command = open_file)
+    open_button.pack(pady = 10)
+
+    output_text = scrolledtext.ScrolledText(root, wrap=tk.WORD, width=60, height=20)
+    output_text.pack(pady=10)
+
+
+    root.mainloop()
