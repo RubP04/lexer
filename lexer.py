@@ -15,7 +15,8 @@ TOKEN_PATTERNS = [
 ]
 
 def read_file(filename):
-
+    with open(filename, 'r') as f:
+        return f.read()
 
 def clean_code(input):
     code = re.sub(r'//.*', '', input)
@@ -49,24 +50,11 @@ def tokenize(input):
 
 def lexer(filename):
     raw_text = read_file(filename)
-    cleaned = clean_code(raw_text)
-    tokens = tokenize(cleaned)
+    tokens = tokenize(raw_text)
 
     for token in tokens:
         print(token)
 
 if __name__ == "__main__":
-    code = """
-    int main() {
-        float x = 10.5;
-        int y = 3;
-        if (x > y && y != 0) {
-            x = x + y;
-        }
-    }
-    """
-    
-    tokens = tokenize(code)
-    for token in tokens:
-        print(token)
+    lexer("text.txt")
 
