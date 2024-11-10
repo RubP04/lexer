@@ -52,7 +52,7 @@ def lexer(filename):
     cleaned = clean_code(raw_text)
     tokens = tokenize(cleaned)
 
-    print("Lexemes and Tokens for {filename}:")
+    print(f"Lexemes and Tokens for {filename}:")
     for token in tokens:
         print(token)
 
