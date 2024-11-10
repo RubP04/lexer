@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import filedialog, scrolledtext
 
 TOKEN_PATTERNS = [
-    ('KEYWORD', r'\b(int|bool|float|char|if|else|while|for|true|false|main)\b'),
+    ('KEYWORD', r'\b(int|bool|float|char|if|else|while|true|false|main)\b'),
     ('LOGICAL_OP', r'&&|\|\|'),
     ('OPERATOR', r'==|!=|<=|>=|\+|-|\*|/|%|=|<|>|!'),
     ('FLOAT', r'\b\d+\.\d+\b'),
@@ -28,9 +28,18 @@ def tokenize(input):
     cleaned = clean_code(input)
     lexemes = []
     position = 0
+    line = 1
     scope = [0]
 
     while position < len(cleaned):
+        if cleaned[position] == '\n':
+            line += 1
+            position += 1
+            continue
+        if cleaned[position].isspace():
+            position += 1
+            continue
+
         match = False
 
         for token, pattern in TOKEN_PATTERNS:
