@@ -38,7 +38,7 @@ def tokenize(input):
 
             if check:
                 lexeme = check.group(0)
-                lexemes.append(f'Token = {token} : Lexeme = {lexeme}')
+                lexemes.append(f'Token -> {token:<10}  Lexeme -> {lexeme}')
                 position += len(lexeme)
                 match = True
                 break
@@ -53,8 +53,8 @@ def lexer(filename):
     tokens = tokenize(raw_text)
 
     print(f"Lexemes and Tokens for {filename}:")
-    for token in tokens:
-        print(token)
+    for index, token in enumerate(tokens, start=1):
+        print(f'{index}. {token}')
 
 if __name__ == "__main__":
     lexer("text.txt")
