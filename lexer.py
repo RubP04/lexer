@@ -49,7 +49,7 @@ def tokenize(input):
                     currScope = 'Global'
                 else:
                     currScope = 'Local'
-                lexemes.append(f'Token -> {token:<10}  Lexeme -> {lexeme:<12}  Scope -> {currScope:<2}')
+                lexemes.append(f'Token -> {token:<10}  Lexeme -> {lexeme}')
                 position += len(lexeme)
                 match = True
                 break
