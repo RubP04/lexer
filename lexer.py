@@ -37,7 +37,7 @@ def tokenize(input):
 
             if check:
                 lexeme = check.group(0)
-                lexemes.append(f'{token}: {lexeme}')
+                lexemes.append(f'Token = {token} : Lexeme = {lexeme}')
                 position += len(lexeme)
                 match = True
                 break
@@ -52,6 +52,7 @@ def lexer(filename):
     cleaned = clean_code(raw_text)
     tokens = tokenize(cleaned)
 
+    print("Lexemes and Tokens for {filename}:")
     for token in tokens:
         print(token)
 
