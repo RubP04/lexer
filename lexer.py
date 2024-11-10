@@ -1,9 +1,7 @@
 import re
-from enum import Enum
-from typing import List, Tuple, Dict
 
 TOKEN_PATTERNS = [
-    ('KEYWORD', r'\b(int|bool|float|char|if|else|while|true|false|main)\b'),
+    ('KEYWORD', r'\b(int|bool|float|char|if|else|while|for|true|false|main)\b'),
     ('LOGICAL_OP', r'&&|\|\|'),
     ('OPERATOR', r'==|!=|<=|>=|\+|-|\*|/|%|=|<|>|!'),
     ('FLOAT', r'\b\d+\.\d+\b'),
