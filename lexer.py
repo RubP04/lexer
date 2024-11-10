@@ -15,7 +15,7 @@ TOKEN_PATTERNS = [
 ]
 
 def clean_code(input):
-    code = re.sub(r'//.*', '', input.code)
+    code = re.sub(r'//.*', '', input)
     code = re.sub(r'/\*.*?\*/', '', code, flags=re.DOTALL)
     code = code.strip()
     return code
@@ -41,6 +41,21 @@ def tokenize(input):
 
         if not match:
             position += 1
-            
+
     return lexemes
+
+if __name__ == "__main__":
+    code = """
+    int main() {
+        float x = 10.5;
+        int y = 3;
+        if (x > y && y != 0) {
+            x = x + y;
+        }
+    }
+    """
+    
+    tokens = tokenize(code)
+    for token in tokens:
+        print(token)
 
