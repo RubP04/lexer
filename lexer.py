@@ -1,6 +1,8 @@
 import re
 from enum import Enum
 from typing import List, Tuple, Dict
+import tkinter as tk
+from tkinter import filedialog, scrolledtext
 
 TOKEN_PATTERNS = [
     ('KEYWORD', r'\b(int|bool|float|char|if|else|while|true|false|main)\b'),
@@ -51,11 +53,33 @@ def tokenize(input):
 def lexer(filename):
     raw_text = read_file(filename)
     tokens = tokenize(raw_text)
+    display_tokens(tokens)
 
     print(f"Lexemes and Tokens for {filename}:")
     for token in tokens:
         print(token)
 
-if __name__ == "__main__":
-    lexer("text.txt")
+def open_file():
+    filename = filedialog.askopenfilename(title = "Select a txt file", filetypes=[("Text Files", "*.txt")]) 
+    if filename:
+        lexer(filename)
 
+def display_tokens(tokens: List[str]):
+    output_text.delete(1.0, tk.END)
+    for token in tokens:
+        output_text.insert(tk.END, token + '\n')  # Insert each token on a new line
+
+if __name__ == "__main__":
+    #lexer("text.txt")
+    root = tk.Tk()
+    root.title("Lexer")
+    root.geometry("500x500")
+
+    open_button = tk.Button(root, text = "Open File", command = open_file)
+    open_button.pack(pady = 10)
+
+    output_text = scrolledtext.ScrolledText(root, wrap=tk.WORD, width=60, height=20)
+    output_text.pack(pady=10)
+
+
+    root.mainloop()
