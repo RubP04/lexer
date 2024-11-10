@@ -14,6 +14,9 @@ TOKEN_PATTERNS = [
     ('IDENTIFIER', r'[a-zA-Z_][a-zA-Z0-9_]*')
 ]
 
+def read_file(filename):
+
+
 def clean_code(input):
     code = re.sub(r'//.*', '', input)
     code = re.sub(r'/\*.*?\*/', '', code, flags=re.DOTALL)
@@ -43,6 +46,14 @@ def tokenize(input):
             position += 1
 
     return lexemes
+
+def lexer(filename):
+    raw_text = read_file(filename)
+    cleaned = clean_code(raw_text)
+    tokens = tokenize(cleaned)
+
+    for token in tokens:
+        print(token)
 
 if __name__ == "__main__":
     code = """
