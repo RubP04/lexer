@@ -2,13 +2,13 @@ Symbol Table:
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 Name                          Type                          Scope                         Declaration Line              References
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-x                             IDENTIFIER                    Global_block5                 7                             [7, 13, 16, 18, 22, 23, 27, 28, 32]
-pi                            IDENTIFIER                    Global_block5                 8                             [8, 32, 43]
-letter                        IDENTIFIER                    Global_block5                 9                             [9]
-flag                          IDENTIFIER                    Global_block5                 10                            [10, 16]
-y                             IDENTIFIER                    Global_block5_block16         18                            [18]
-calculateArea                 IDENTIFIER                    Global_block5                 32                            [32, 42]
-values                        IDENTIFIER                    Global_block5                 35                            [35, 36, 37]
-radius                        IDENTIFIER                    Global                        42                            [42, 43]
-precision                     IDENTIFIER                    Global                        42                            [42]
-area                          IDENTIFIER                    Global_block42                43                            [43, 44]
+x                             int                           Global_block5                 7                             [7, 13, 16, 18, 22, 23, 27, 28, 32]
+pi                            float                         Global_block5                 8                             [8, 32, 43]
+letter                        char                          Global_block5                 9                             [9]
+flag                          bool                          Global_block5                 10                            [10, 16]
+y                             int                           Global_block5_block16         18                            [18]
+calculateArea                 int                           Global_block5                 32                            [32, 42]
+values                        float                         Global_block5                 35                            [35, 36, 37]
+radius                        float                         Global                        42                            [42, 43]
+precision                     int                           Global                        42                            [42]
+area                          float                         Global_block42                43                            [43, 44]

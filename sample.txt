@@ -39,7 +39,7 @@ void main() {
     return 0;
 }
 
-float calculateArea(float radius, int precision) {
+int calculateArea(float radius, int precision) {
     float area = pi * radius * radius;
     return area;
 }

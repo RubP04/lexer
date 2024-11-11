@@ -34,6 +34,7 @@ def tokenize(input):
     symbol_table = {}
     last_token = None
     last_lexeme = None
+    current_data_type = None
 
     def get_current_scope():
         return '_'.join(scope_stack)
@@ -55,13 +56,15 @@ def tokenize(input):
 
             if check:
                 lexeme = check.group(0)
-                
-                if token == 'IDENTIFIER':
+
+                if token == 'DATA_TYPE':
+                    current_data_type = lexeme
+                elif token == 'IDENTIFIER':
                     if lexeme not in symbol_table:
                         symbol_table[lexeme] = {
                             'scope': get_current_scope(),
                             'declaration_line': line,
-                            'type': token,
+                            'type': current_data_type,
                             'references': [line]
                         }
                     else:
