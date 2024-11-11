@@ -1,3 +1,7 @@
+/*
+This is a multi-line comment
+It should be ignored by the lexer
+*/
 void main() {
     // Variable declarations
     int x = 5;
@@ -39,8 +43,3 @@ float calculateArea(float radius, int precision) {
     float area = pi * radius * radius;
     return area;
 }
-
-/*
-This is a multi-line comment
-It should be ignored by the lexer
-*/

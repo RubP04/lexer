@@ -2,13 +2,13 @@ Symbol Table:
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 Name                          Type                          Scope                         Declaration Line              References
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-x                             IDENTIFIER                    Global_block1                 3                             {3, 9, 12, 14, 18, 19, 23, 24, 28}
-pi                            IDENTIFIER                    Global_block1                 4                             {4, 28, 39}
-letter                        IDENTIFIER                    Global_block1                 5                             {5}
-flag                          IDENTIFIER                    Global_block1                 6                             {12, 6}
-y                             IDENTIFIER                    Global_block1_block12         14                            {14}
-calculateArea                 IDENTIFIER                    Global_block1                 28                            {28, 38}
-values                        IDENTIFIER                    Global_block1                 31                            {32, 33, 31}
-radius                        IDENTIFIER                    Global                        38                            {38, 39}
-precision                     IDENTIFIER                    Global                        38                            {38}
-area                          IDENTIFIER                    Global_block38                39                            {40, 39}
+x                             IDENTIFIER                    Global_block5                 7                             [7, 13, 16, 18, 22, 23, 27, 28, 32]
+pi                            IDENTIFIER                    Global_block5                 8                             [8, 32, 43]
+letter                        IDENTIFIER                    Global_block5                 9                             [9]
+flag                          IDENTIFIER                    Global_block5                 10                            [10, 16]
+y                             IDENTIFIER                    Global_block5_block16         18                            [18]
+calculateArea                 IDENTIFIER                    Global_block5                 32                            [32, 42]
+values                        IDENTIFIER                    Global_block5                 35                            [35, 36, 37]
+radius                        IDENTIFIER                    Global                        42                            [42, 43]
+precision                     IDENTIFIER                    Global                        42                            [42]
+area                          IDENTIFIER                    Global_block42                43                            [43, 44]

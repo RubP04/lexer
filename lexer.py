@@ -3,7 +3,8 @@ import tkinter as tk
 from tkinter import filedialog, scrolledtext
 
 TOKEN_PATTERNS = [
-    ('KEYWORD', r'\b(int|bool|float|char|void|if|else|while|true|false|main|void|return)\b'),
+    ('DATA_TYPE', r'\b(int|bool|float|char|void)\b'),
+    ('KEYWORD', r'\b(if|else|while|true|false|main|void|return)\b'),
     ('LOGICAL_OP', r'&&|\|\|'),
     ('OPERATOR', r'==|!=|<=|>=|\+|-|\*|/|%|=|<|>|!'),
     ('FLOAT', r'\b\d+\.\d+\b'),
@@ -20,9 +21,9 @@ def read_file(filename):
 
 def clean_code(input):
     code = re.sub(r'//.*', '', input)
-    code = re.sub(r'/\*.*?\*/', '', code, flags=re.DOTALL)
-    code = code.strip()
+    code = re.sub(r'/\*[\s\S]*?\*/', lambda m: '\n' * m.group(0).count('\n'), code)
     return code
+
 
 def tokenize(input):
     cleaned = clean_code(input)
@@ -61,10 +62,12 @@ def tokenize(input):
                             'scope': get_current_scope(),
                             'declaration_line': line,
                             'type': token,
-                            'references': set([line])
+                            'references': [line]
                         }
                     else:
-                        symbol_table[lexeme]['references'].add(line)
+                        if line not in symbol_table[lexeme]['references']:
+                            symbol_table[lexeme]['references'].append(line)
+
                 elif lexeme == '{':
                     if last_token == 'KEYWORD' and last_lexeme in ['if', 'while']:
                         scope_stack.append(last_lexeme)
