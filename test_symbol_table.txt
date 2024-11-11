@@ -1,11 +1,14 @@
 Symbol Table:
-calculateArea -> {'scope': 'Global', 'declaration_line': 1, 'type': 'IDENTIFIER', 'references': {1, 11}}
-radius -> {'scope': 'Global', 'declaration_line': 1, 'type': 'IDENTIFIER', 'references': {1, 3}}
-pi -> {'scope': 'Global_block1', 'declaration_line': 2, 'type': 'IDENTIFIER', 'references': {2, 3}}
-area -> {'scope': 'Global_block1', 'declaration_line': 3, 'type': 'IDENTIFIER', 'references': {3, 4}}
-result -> {'scope': 'Global_block1_block4', 'declaration_line': 5, 'type': 'IDENTIFIER', 'references': {5}}
-r -> {'scope': 'Global_block9', 'declaration_line': 10, 'type': 'IDENTIFIER', 'references': {10, 11, 12, 13}}
-x -> {'scope': 'Global_block18', 'declaration_line': 19, 'type': 'IDENTIFIER', 'references': {27, 19, 30, 23}}
-y -> {'scope': 'Global_block18', 'declaration_line': 20, 'type': 'IDENTIFIER', 'references': {24, 25, 20}}
-c -> {'scope': 'Global_block18', 'declaration_line': 21, 'type': 'IDENTIFIER', 'references': {33, 21}}
-flag -> {'scope': 'Global_block18_block27', 'declaration_line': 28, 'type': 'IDENTIFIER', 'references': {28, 29}}
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+Name                          Type                          Scope                         Declaration Line              References
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+calculateArea                 IDENTIFIER                    Global                        1                             {1, 11}
+radius                        IDENTIFIER                    Global                        1                             {1, 3}
+pi                            IDENTIFIER                    Global_block1                 2                             {2, 3}
+area                          IDENTIFIER                    Global_block1                 3                             {3, 4}
+result                        IDENTIFIER                    Global_block1_block4          5                             {5}
+r                             IDENTIFIER                    Global_block9                 10                            {10, 11, 12, 13}
+x                             IDENTIFIER                    Global_block18                19                            {27, 19, 30, 23}
+y                             IDENTIFIER                    Global_block18                20                            {24, 25, 20}
+c                             IDENTIFIER                    Global_block18                21                            {33, 21}
+flag                          IDENTIFIER                    Global_block18_block27        28                            {28, 29}

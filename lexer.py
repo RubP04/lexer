@@ -121,8 +121,13 @@ def lexer(filename):
     symbol_table_filename = filename.split('.')[0] + "_symbol_table.txt"
     with open(symbol_table_filename, 'w') as f:
         f.write("Symbol Table:\n")
-        for key, value in symbol_table.items():
-            f.write(f'{key} -> {value}\n')
+        f.write('-' * 160)
+        f.write('\n')
+        f.write(f'{title1:<30}{title2:<30}{title3:<30}{title4:<30}{title5}\n')
+        f.write('-' * 160)
+        f.write('\n')
+        for symbol in symbol_table:
+            f.write(f'{symbol:<30}{symbol_table[symbol]["type"]:<30}{symbol_table[symbol]["scope"]:<30}{symbol_table[symbol]["declaration_line"]:<30}{symbol_table[symbol]["references"]}\n')
 
     print(f"\nSymbol table has been written to {symbol_table_filename}")
 
