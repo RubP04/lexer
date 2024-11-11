@@ -31,7 +31,6 @@ def tokenize(input):
     line = 1
     scope_stack = ['Global']
     symbol_table = {}
-    current_type = None
     last_token = None
     last_lexeme = None
 
@@ -56,9 +55,6 @@ def tokenize(input):
             if check:
                 lexeme = check.group(0)
                 
-                if token == 'KEYWORD' and lexeme in ['int', 'bool', 'float', 'char', 'void']:
-                    current_type = lexeme
-                
                 if token == 'IDENTIFIER':
                     if lexeme not in symbol_table:
                         symbol_table[lexeme] = {
@@ -77,13 +73,11 @@ def tokenize(input):
                 elif lexeme == '}':
                     if len(scope_stack) > 1:
                         scope_stack.pop()
-                elif lexeme == ';':
-                    current_type = None
 
                 last_token = token
                 last_lexeme = lexeme
 
-                lexemes.append(f'Token -> {token:<10}  Lexeme -> {lexeme}')
+                lexemes.append((token, lexeme))
                 position += len(lexeme)
                 match = True
                 break
@@ -102,9 +96,11 @@ def lexer(filename):
 
     print(f"Lexemes and Tokens for {filename}:")
     print('-' * 160)
-
-    for index, token in enumerate(tokens, start=1):
-        print(f'{index}. {token}')
+    title1, title2 = 'Token', 'Lexeme'
+    print(f'{title1:<30}{title2:<30}')
+    print('-' * 160)
+    for token in tokens:
+        print(f'{token[0]:<30}{token[1]}')
 
     print('-' * 160)
     print('\n')
@@ -114,8 +110,8 @@ def lexer(filename):
     print(f'{title1:<30}{title2:<30}{title3:<30}{title4:<30}{title5}')
     print('-' * 160)
 
-    for symbol in symbol_table:
-        print(f'{symbol:<30}{symbol_table[symbol]["type"]:<30}{symbol_table[symbol]["scope"]:<30}{symbol_table[symbol]["declaration_line"]:<30}{symbol_table[symbol]["references"]}')
+    for symbol, info in symbol_table.items():
+        print(f'{symbol:<30}{info["type"]:<30}{info["scope"]:<30}{info["declaration_line"]:<30}{info["references"]}')
 
 
     symbol_table_filename = filename.split('.')[0] + "_symbol_table.txt"
@@ -126,8 +122,8 @@ def lexer(filename):
         f.write(f'{title1:<30}{title2:<30}{title3:<30}{title4:<30}{title5}\n')
         f.write('-' * 160)
         f.write('\n')
-        for symbol in symbol_table:
-            f.write(f'{symbol:<30}{symbol_table[symbol]["type"]:<30}{symbol_table[symbol]["scope"]:<30}{symbol_table[symbol]["declaration_line"]:<30}{symbol_table[symbol]["references"]}\n')
+        for symbol, info in symbol_table.items():
+            f.write(f'{symbol:<30}{info["type"]:<30}{info["scope"]:<30}{info["declaration_line"]:<30}{info["references"]}\n')
 
     print(f"\nSymbol table has been written to {symbol_table_filename}")
 
@@ -138,8 +134,15 @@ def open_file():
 
 def display_tokens(tokens):
     output_text.delete(1.0, tk.END)
+    title1, title2 = 'Token', 'Lexeme'
+
+    output_text.insert(tk.END, "Lexer:\n")
+    output_text.insert(tk.END, '-' * 160 + '\n')
+    output_text.insert(tk.END, f'{title1:<30}{title2:<30}\n')
+    output_text.insert(tk.END, '-' * 160 + '\n')
+
     for token in tokens:
-        output_text.insert(tk.END, token + '\n')
+        output_text.insert(tk.END, f'{token[0]:<30}{token[1]}\n')
 
 def display_symbol_table(symbol_table):
     symbol_table_text.delete(1.0, tk.END)
