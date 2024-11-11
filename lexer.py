@@ -31,7 +31,7 @@ def tokenize(input):
     line = 1
     scope_stack = ['Global']
     symbol_table = {}
-    current_type = None  # Tracks type keywords (e.g., int, float, char)
+    current_type = None
     last_token = None
     last_lexeme = None
 
@@ -56,46 +56,33 @@ def tokenize(input):
             if check:
                 lexeme = check.group(0)
                 
-                # Track type declarations
                 if token == 'KEYWORD' and lexeme in ['int', 'bool', 'float', 'char', 'void']:
                     current_type = lexeme
                 
-                # Add all identifiers to the symbol table
                 if token == 'IDENTIFIER':
-                    # Add identifier to symbol table if not already present
                     if lexeme not in symbol_table:
                         symbol_table[lexeme] = {
                             'scope': get_current_scope(),
                             'declaration_line': line,
-                            'type': current_type,  # Use current_type if available, otherwise None
+                            'type': current_type,
                             'references': set([line])
                         }
                     else:
-                        # Update references for an existing identifier
                         symbol_table[lexeme]['references'].add(line)
-                
-                # Handle entering and exiting braces for scope tracking
                 elif lexeme == '{':
                     if last_token == 'KEYWORD' and last_lexeme in ['if', 'while']:
-                        # Append control structure to scope
                         scope_stack.append(last_lexeme)
                     else:
-                        # Generic block within the current scope
                         scope_stack.append(f'block{line}')
                 elif lexeme == '}':
-                    # Exit the current scope
                     if len(scope_stack) > 1:
                         scope_stack.pop()
-                
-                # Reset type after a statement ends
                 elif lexeme == ';':
                     current_type = None
 
-                # Track last token for scope-based decisions
                 last_token = token
                 last_lexeme = lexeme
 
-                # Append lexeme and scope information
                 lexemes.append(f'Token -> {token:<10}  Lexeme -> {lexeme}  Scope -> {get_current_scope()}')
                 position += len(lexeme)
                 match = True
@@ -116,14 +103,16 @@ def lexer(filename):
     display_tokens(tokens)
 
     print(f"Lexemes and Tokens for {filename}:")
+
     for index, token in enumerate(tokens, start=1):
         print(f'{index}. {token}')
+
     print('-' * 80)
     print("Symbol Table:")
+    
     for key, value in symbol_table.items():
         print(f'{key} -> {value}')
 
-    # Write symbol table to a separate file
     symbol_table_filename = filename.split('.')[0] + "_symbol_table.txt"
     with open(symbol_table_filename, 'w') as f:
         f.write("Symbol Table:\n")
@@ -140,10 +129,9 @@ def open_file():
 def display_tokens(tokens):
     output_text.delete(1.0, tk.END)
     for token in tokens:
-        output_text.insert(tk.END, token + '\n')  # Insert each token on a new line
+        output_text.insert(tk.END, token + '\n')
 
 if __name__ == "__main__":
-    #lexer("text.txt")
     root = tk.Tk()
     root.title("Lexer")
     root.geometry("500x500")
@@ -153,6 +141,5 @@ if __name__ == "__main__":
 
     output_text = scrolledtext.ScrolledText(root, wrap=tk.WORD, width=60, height=20)
     output_text.pack(pady=10)
-
 
     root.mainloop()
