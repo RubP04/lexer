@@ -1,0 +1,47 @@
+// This is a single-line comment
+/*
+This is a multi-line comment
+It should be ignored by the lexer
+*/
+
+void main() {
+    // Variable declarations
+    int x = 5;
+    float pi = 3.14;
+    char letter = 'A';
+    bool flag = true;
+
+    // Arithmetic operations
+    x = x + 10 - 3 * 2 / 1 % 4;
+
+    // Logical and comparison operations
+    if (x > 0 && !flag || x <= 10) {
+        // Nested block with a local variable
+        int y = x;
+    }
+
+    // More comparison operators
+    if (x >= 5) {
+        x = x - 1;
+    }
+
+    // Comparison operators in while loop
+    while (x != 0 && x == 5) {
+        x--;
+    }
+
+    // Function call with multiple arguments
+    calculateArea(pi, x);
+
+    // Array declaration and assignment
+    float values[10];
+    values[0] = 1.618;
+    values[1] = 2.718;
+
+    return 0;
+}
+
+float calculateArea(float radius, int precision) {
+    float area = pi * radius * radius;
+    return area;
+}
