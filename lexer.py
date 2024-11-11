@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import filedialog, scrolledtext
 
 TOKEN_PATTERNS = [
-    ('KEYWORD', r'\b(int|bool|float|char|if|else|while|true|false|main)\b'),
+    ('KEYWORD', r'\b(int|bool|float|char|void|if|else|while|true|false|main)\b'),
     ('LOGICAL_OP', r'&&|\|\|'),
     ('OPERATOR', r'==|!=|<=|>=|\+|-|\*|/|%|=|<|>|!'),
     ('FLOAT', r'\b\d+\.\d+\b'),
@@ -31,7 +31,7 @@ def tokenize(input):
     line = 1
     scope_stack = ['Global']
     symbol_table = {}
-    current_type = None
+    current_type = None  # Tracks type keywords (e.g., int, float, char)
     last_token = None
     last_lexeme = None
 
@@ -56,43 +56,25 @@ def tokenize(input):
             if check:
                 lexeme = check.group(0)
                 
-                # Update type tracking for declarations
+                # Track type declarations
                 if token == 'KEYWORD' and lexeme in ['int', 'bool', 'float', 'char', 'void']:
                     current_type = lexeme
                 
-                # Handle function declarations and add to the scope
+                # Add all identifiers to the symbol table
                 if token == 'IDENTIFIER':
-                    peek_ahead = position + len(lexeme)
-                    is_function = (peek_ahead < len(cleaned) and 
-                                   cleaned[peek_ahead:].lstrip().startswith('(') and 
-                                   last_token == 'KEYWORD')
-                    
-                    if is_function:
-                        # Enter function scope
-                        scope_stack.append(lexeme)
+                    # Add identifier to symbol table if not already present
+                    if lexeme not in symbol_table:
                         symbol_table[lexeme] = {
-                            'type': token,
-                            'scope': 'Global',
-                            'declaration_line': line,
-                            'type': current_type,
-                            'is_function': True,
-                            'references': set([line])
-                        }
-                    elif current_type and lexeme not in symbol_table:
-                        # Variable declaration
-                        symbol_table[lexeme] = {
-                            'type': token,
                             'scope': get_current_scope(),
                             'declaration_line': line,
-                            'type': current_type,
-                            'is_function': False,
+                            'type': current_type,  # Use current_type if available, otherwise None
                             'references': set([line])
                         }
-                    elif lexeme in symbol_table:
-                        # Variable reference
+                    else:
+                        # Update references for an existing identifier
                         symbol_table[lexeme]['references'].add(line)
                 
-                # Handle entering and exiting braces for control structures or functions
+                # Handle entering and exiting braces for scope tracking
                 elif lexeme == '{':
                     if last_token == 'KEYWORD' and last_lexeme in ['if', 'while']:
                         # Append control structure to scope
@@ -109,17 +91,12 @@ def tokenize(input):
                 elif lexeme == ';':
                     current_type = None
 
-                # Update last token tracking
-                if token == 'KEYWORD':
-                    last_token = token
-                    last_lexeme = lexeme
-                else:
-                    last_token = None
-                    last_lexeme = None
+                # Track last token for scope-based decisions
+                last_token = token
+                last_lexeme = lexeme
 
-                # Get current scope path and record lexeme
-                current_scope = get_current_scope()
-                lexemes.append(f'Token -> {token:<10}  Lexeme -> {lexeme}')
+                # Append lexeme and scope information
+                lexemes.append(f'Token -> {token:<10}  Lexeme -> {lexeme}  Scope -> {get_current_scope()}')
                 position += len(lexeme)
                 match = True
                 break
@@ -128,6 +105,8 @@ def tokenize(input):
             position += 1
 
     return lexemes, symbol_table
+
+
 
 
 
