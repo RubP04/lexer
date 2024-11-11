@@ -3,7 +3,7 @@ import tkinter as tk
 from tkinter import filedialog, scrolledtext
 
 TOKEN_PATTERNS = [
-    ('KEYWORD', r'\b(int|bool|float|char|void|if|else|while|true|false|main)\b'),
+    ('KEYWORD', r'\b(int|bool|float|char|void|if|else|while|true|false|main|void|return)\b'),
     ('LOGICAL_OP', r'&&|\|\|'),
     ('OPERATOR', r'==|!=|<=|>=|\+|-|\*|/|%|=|<|>|!'),
     ('FLOAT', r'\b\d+\.\d+\b'),
@@ -64,7 +64,7 @@ def tokenize(input):
                         symbol_table[lexeme] = {
                             'scope': get_current_scope(),
                             'declaration_line': line,
-                            'type': current_type,
+                            'type': token,
                             'references': set([line])
                         }
                     else:
@@ -83,7 +83,7 @@ def tokenize(input):
                 last_token = token
                 last_lexeme = lexeme
 
-                lexemes.append(f'Token -> {token:<10}  Lexeme -> {lexeme}  Scope -> {get_current_scope()}')
+                lexemes.append(f'Token -> {token:<10}  Lexeme -> {lexeme}')
                 position += len(lexeme)
                 match = True
                 break
@@ -93,25 +93,28 @@ def tokenize(input):
 
     return lexemes, symbol_table
 
-
-
-
-
 def lexer(filename):
     raw_text = read_file(filename)
     tokens, symbol_table = tokenize(raw_text)
     display_tokens(tokens)
 
     print(f"Lexemes and Tokens for {filename}:")
+    print('-' * 160)
 
     for index, token in enumerate(tokens, start=1):
         print(f'{index}. {token}')
 
-    print('-' * 80)
+    print('-' * 160)
+    print('\n')
     print("Symbol Table:")
-    
-    for key, value in symbol_table.items():
-        print(f'{key} -> {value}')
+    print('-' * 160)
+    title1, title2, title3, title4, title5 = 'Name', 'Type', 'Scope', 'Declaration Line', 'References'
+    print(f'{title1:<30}{title2:<30}{title3:<30}{title4:<30}{title5}')
+    print('-' * 160)
+
+    for symbol in symbol_table:
+        print(f'{symbol:<30}{symbol_table[symbol]["type"]:<30}{symbol_table[symbol]["scope"]:<30}{symbol_table[symbol]["declaration_line"]:<30}{symbol_table[symbol]["references"]}')
+
 
     symbol_table_filename = filename.split('.')[0] + "_symbol_table.txt"
     with open(symbol_table_filename, 'w') as f:
