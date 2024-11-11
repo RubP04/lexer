@@ -29,7 +29,14 @@ def tokenize(input):
     lexemes = []
     position = 0
     line = 1
-    scope = [0]
+    scope_stack = ['Global']
+    symbol_table = {}
+    current_type = None
+    last_token = None
+    last_lexeme = None
+
+    def get_current_scope():
+        return '_'.join(scope_stack)
 
     while position < len(cleaned):
         if cleaned[position] == '\n':
@@ -48,16 +55,70 @@ def tokenize(input):
 
             if check:
                 lexeme = check.group(0)
-                if lexeme == '{':
-                    scope.append(scope[-1] + 1)
+                
+                # Update type tracking for declarations
+                if token == 'KEYWORD' and lexeme in ['int', 'bool', 'float', 'char', 'void']:
+                    current_type = lexeme
+                
+                # Handle function declarations and add to the scope
+                if token == 'IDENTIFIER':
+                    peek_ahead = position + len(lexeme)
+                    is_function = (peek_ahead < len(cleaned) and 
+                                   cleaned[peek_ahead:].lstrip().startswith('(') and 
+                                   last_token == 'KEYWORD')
+                    
+                    if is_function:
+                        # Enter function scope
+                        scope_stack.append(lexeme)
+                        symbol_table[lexeme] = {
+                            'type': token,
+                            'scope': 'Global',
+                            'declaration_line': line,
+                            'type': current_type,
+                            'is_function': True,
+                            'references': set([line])
+                        }
+                    elif current_type and lexeme not in symbol_table:
+                        # Variable declaration
+                        symbol_table[lexeme] = {
+                            'type': token,
+                            'scope': get_current_scope(),
+                            'declaration_line': line,
+                            'type': current_type,
+                            'is_function': False,
+                            'references': set([line])
+                        }
+                    elif lexeme in symbol_table:
+                        # Variable reference
+                        symbol_table[lexeme]['references'].add(line)
+                
+                # Handle entering and exiting braces for control structures or functions
+                elif lexeme == '{':
+                    if last_token == 'KEYWORD' and last_lexeme in ['if', 'while']:
+                        # Append control structure to scope
+                        scope_stack.append(last_lexeme)
+                    else:
+                        # Generic block within the current scope
+                        scope_stack.append(f'block{line}')
                 elif lexeme == '}':
-                    scope.pop()
-                currScopeNum = scope[-1]
-                currScope = ''
-                if currScopeNum == 0:
-                    currScope = 'Global'
+                    # Exit the current scope
+                    if len(scope_stack) > 1:
+                        scope_stack.pop()
+                
+                # Reset type after a statement ends
+                elif lexeme == ';':
+                    current_type = None
+
+                # Update last token tracking
+                if token == 'KEYWORD':
+                    last_token = token
+                    last_lexeme = lexeme
                 else:
-                    currScope = 'Local'
+                    last_token = None
+                    last_lexeme = None
+
+                # Get current scope path and record lexeme
+                current_scope = get_current_scope()
                 lexemes.append(f'Token -> {token:<10}  Lexeme -> {lexeme}')
                 position += len(lexeme)
                 match = True
@@ -66,16 +127,22 @@ def tokenize(input):
         if not match:
             position += 1
 
-    return lexemes
+    return lexemes, symbol_table
+
+
 
 def lexer(filename):
     raw_text = read_file(filename)
-    tokens = tokenize(raw_text)
-    display_tokens(tokens)
+    tokens, symbol_table = tokenize(raw_text)
+    #display_tokens(tokens)
 
     print(f"Lexemes and Tokens for {filename}:")
     for index, token in enumerate(tokens, start=1):
         print(f'{index}. {token}')
+    print('-' * 80)
+    print("Symbol Table:")
+    for key, value in symbol_table.items():
+        print(f'{key} -> {value}')
 
 def open_file():
     filename = filedialog.askopenfilename(title = "Select a txt file", filetypes=[("Text Files", "*.txt")]) 
