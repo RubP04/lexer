@@ -1,0 +1,12 @@
+Symbol Table:
+calculateArea -> {'scope': 'Global', 'declaration_line': 1, 'type': 'void', 'references': {1, 11}}
+radius -> {'scope': 'Global', 'declaration_line': 1, 'type': 'float', 'references': {1, 3}}
+pi -> {'scope': 'Global_block1', 'declaration_line': 2, 'type': 'float', 'references': {2, 3}}
+area -> {'scope': 'Global_block1', 'declaration_line': 3, 'type': 'float', 'references': {3, 4}}
+result -> {'scope': 'Global_block1_block4', 'declaration_line': 5, 'type': 'int', 'references': {5}}
+r -> {'scope': 'Global_block9', 'declaration_line': 10, 'type': 'float', 'references': {10, 11, 12, 13}}
+return -> {'scope': 'Global_block9', 'declaration_line': 15, 'type': None, 'references': {34, 15}}
+x -> {'scope': 'Global_block18', 'declaration_line': 19, 'type': 'int', 'references': {27, 19, 30, 23}}
+y -> {'scope': 'Global_block18', 'declaration_line': 20, 'type': 'float', 'references': {24, 25, 20}}
+c -> {'scope': 'Global_block18', 'declaration_line': 21, 'type': 'char', 'references': {33, 21}}
+flag -> {'scope': 'Global_block18_block27', 'declaration_line': 28, 'type': 'bool', 'references': {28, 29}}

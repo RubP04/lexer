@@ -113,7 +113,7 @@ def tokenize(input):
 def lexer(filename):
     raw_text = read_file(filename)
     tokens, symbol_table = tokenize(raw_text)
-    #display_tokens(tokens)
+    display_tokens(tokens)
 
     print(f"Lexemes and Tokens for {filename}:")
     for index, token in enumerate(tokens, start=1):
@@ -122,6 +122,15 @@ def lexer(filename):
     print("Symbol Table:")
     for key, value in symbol_table.items():
         print(f'{key} -> {value}')
+
+    # Write symbol table to a separate file
+    symbol_table_filename = filename.split('.')[0] + "_symbol_table.txt"
+    with open(symbol_table_filename, 'w') as f:
+        f.write("Symbol Table:\n")
+        for key, value in symbol_table.items():
+            f.write(f'{key} -> {value}\n')
+
+    print(f"\nSymbol table has been written to {symbol_table_filename}")
 
 def open_file():
     filename = filedialog.askopenfilename(title = "Select a txt file", filetypes=[("Text Files", "*.txt")]) 
