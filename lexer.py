@@ -97,6 +97,8 @@ def lexer(filename):
     raw_text = read_file(filename)
     tokens, symbol_table = tokenize(raw_text)
     display_tokens(tokens)
+    display_symbol_table(symbol_table)
+
 
     print(f"Lexemes and Tokens for {filename}:")
     print('-' * 160)
@@ -134,6 +136,13 @@ def display_tokens(tokens):
     for token in tokens:
         output_text.insert(tk.END, token + '\n')
 
+def display_symbol_table(symbol_table):
+    symbol_table_text.delete(1.0, tk.END)
+    symbol_table_text.insert(tk.END, "Symbol Table:\n")
+    for key, value in symbol_table.items():
+        symbol_table_text.insert(tk.END, f'{key} -> {value}\n')
+
+
 if __name__ == "__main__":
     root = tk.Tk()
     root.title("Lexer")
@@ -144,5 +153,8 @@ if __name__ == "__main__":
 
     output_text = scrolledtext.ScrolledText(root, wrap=tk.WORD, width=60, height=20)
     output_text.pack(pady=10)
+
+    symbol_table_text = scrolledtext.ScrolledText(root, wrap=tk.WORD, width=60, height=15)
+    symbol_table_text.pack(pady=10)
 
     root.mainloop()
