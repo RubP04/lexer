@@ -143,9 +143,19 @@ def display_tokens(tokens):
 
 def display_symbol_table(symbol_table):
     symbol_table_text.delete(1.0, tk.END)
+    title1, title2, title3, title4, title5 = 'Name', 'Type', 'Scope', 'Declaration Line', 'References'
+    
     symbol_table_text.insert(tk.END, "Symbol Table:\n")
-    for key, value in symbol_table.items():
-        symbol_table_text.insert(tk.END, f'{key} -> {value}\n')
+    symbol_table_text.insert(tk.END, '-' * 160 + '\n')
+    symbol_table_text.insert(tk.END, f'{title1:<30}{title2:<30}{title3:<30}{title4:<30}{title5}\n')
+    symbol_table_text.insert(tk.END, '-' * 160 + '\n')
+    
+    for symbol, info in symbol_table.items():
+        symbol_table_text.insert(
+            tk.END, 
+            f'{symbol:<30}{info["type"]:<30}{info["scope"]:<30}{info["declaration_line"]:<30}{info["references"]}\n'
+        )
+
 
 
 if __name__ == "__main__":
@@ -156,10 +166,10 @@ if __name__ == "__main__":
     open_button = tk.Button(root, text = "Open File", command = open_file)
     open_button.pack(pady = 10)
 
-    output_text = scrolledtext.ScrolledText(root, wrap=tk.WORD, width=60, height=20)
+    output_text = scrolledtext.ScrolledText(root, wrap=tk.WORD, width=180, height=20)
     output_text.pack(pady=10)
 
-    symbol_table_text = scrolledtext.ScrolledText(root, wrap=tk.WORD, width=60, height=15)
+    symbol_table_text = scrolledtext.ScrolledText(root, wrap=tk.WORD, width=180, height=15)
     symbol_table_text.pack(pady=10)
 
     root.mainloop()
